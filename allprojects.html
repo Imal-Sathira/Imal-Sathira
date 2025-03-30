@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Projects | UI/UX Designer Portfolio</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        section {
+            padding: 80px 0;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            text-align: center;
+            color: #333;
+            position: relative;
+        }
+
+        h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, #6c63ff, #ff6584);
+            border-radius: 2px;
+        }
+
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+            color: #333;
+        }
+
+        p {
+            margin-bottom: 15px;
+            color: #666;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 12px 30px;
+            background: #6c63ff;
+            color: white;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(108, 99, 255, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(108, 99, 255, 0.4);
+            background: #5a52e0;
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid #6c63ff;
+            color: #6c63ff;
+            box-shadow: none;
+        }
+
+        .btn-outline:hover {
+            background: #6c63ff;
+            color: white;
+        }
+
+        .btn-sm {
+            padding: 8px 20px;
+            font-size: 0.9rem;
+        }
+
+        /* Projects Grid */
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 40px;
+        }
+
+        .project-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .project-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-image {
+            position: relative;
+            overflow: hidden;
+            height: 220px;
+        }
+
+        .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .project-card:hover .project-image img {
+            transform: scale(1.05);
+        }
+
+        .project-tag {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 5px 15px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #6c63ff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-content {
+            padding: 25px;
+        }
+
+        .project-content h2 {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+        }
+
+        .project-content p {
+            color: #666;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .tech-tag {
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            color: #555;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 15px;
+        }
+
+        /* Gallery Modal */
+        .gallery-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 1000;
+            overflow: hidden;
+        }
+
+        .gallery-modal.active {
+            display: block;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 1200px;
+            margin: 50px auto;
+            height: calc(100vh - 100px);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            z-index: 1001;
+        }
+
+        .modal-main-image {
+            width: 100%;
+            height: calc(100vh - 180px);
+            object-fit: contain;
+        }
+
+        .modal-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            z-index: 1001;
+        }
+
+        .nav-btn {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+        }
+
+        .thumbnail-container {
+            position: absolute;
+            bottom: 20px;
+            left: 0;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            padding: 10px;
+            overflow-x: auto;
+        }
+
+        .thumbnail {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            overflow: hidden;
+            opacity: 0.6;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .thumbnail.active {
+            opacity: 1;
+            border: 2px solid white;
+        }
+
+        .thumbnail img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .modal-project-info {
+            position: absolute;
+            bottom: 100px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .modal-project-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+        }
+
+        .modal-project-info p {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 0.9rem;
+        }
+
+
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            margin-bottom: 30px;
+            color: #6c63ff;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn i {
+            margin-right: 8px;
+            transition: transform 0.3s ease;
+        }
+
+        .back-btn:hover {
+            color: #5a52e0;
+        }
+
+        .back-btn:hover i {
+            transform: translateX(-5px);
+        }
+
+
+        /* Responsive Design */
+        @media screen and (max-width: 992px) {
+            .projects-grid {
+                grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            }
+        }
+
+        @media screen and (max-width: 768px) {
+            section {
+                padding: 60px 0;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .modal-content {
+                margin: 20px auto;
+                height: calc(100vh - 40px);
+            }
+            
+            .modal-main-image {
+                height: calc(100vh - 120px);
+            }
+            
+            .modal-close {
+                top: -30px;
+            }
+            
+            .nav-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 1.2rem;
+            }
+            
+            .thumbnail {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        @media screen and (max-width: 576px) {
+            .projects-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .project-links {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="projects" id="projects">
+        <div class="container">
+            <a href="index.html" class="back-btn">
+                <i class="fas fa-arrow-left"></i> Back to Portfolio
+            </a>
+
+            <h1>My Projects</h1>
+            
+            <div class="projects-grid">
+                <!-- Project 1 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400/6c63ff/ffffff?text=E-commerce+App" alt="E-commerce App Redesign">
+                        <span class="project-tag">UI/UX Design</span>
+                    </div>
+                    <div class="project-content">
+                        <h2>E-commerce App Redesign</h2>
+                        <p>Complete redesign of a mobile shopping experience with improved navigation and checkout flow resulting in 35% higher conversions.</p>
+                        
+                        <div class="project-tech">
+                            <span class="tech-tag">Figma</span>
+                            <span class="tech-tag">User Research</span>
+                            <span class="tech-tag">Prototyping</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="https://www.figma.com/proto/example1" target="_blank" class="btn btn-sm">
+                                <i class="fab fa-figma"></i> Prototype
+                            </a>
+                            <button class="btn btn-outline btn-sm view-gallery" data-project="1">
+                                <i class="fas fa-images"></i> View Images
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 2 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400/ff6584/ffffff?text=Healthcare+Dashboard" alt="Healthcare Dashboard">
+                        <span class="project-tag">Web Design</span>
+                    </div>
+                    <div class="project-content">
+                        <h2>Healthcare Dashboard</h2>
+                        <p>Data visualization dashboard for healthcare providers to track patient metrics and treatment progress.</p>
+                        
+                        <div class="project-tech">
+                            <span class="tech-tag">React</span>
+                            <span class="tech-tag">D3.js</span>
+                            <span class="tech-tag">UX Research</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="https://www.figma.com/proto/example2" target="_blank" class="btn btn-sm">
+                                <i class="fab fa-figma"></i> Prototype
+                            </a>
+                            <button class="btn btn-outline btn-sm view-gallery" data-project="2">
+                                <i class="fas fa-images"></i> View Images
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 3 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400/4cc9f0/ffffff?text=Travel+App" alt="Travel Booking Platform">
+                        <span class="project-tag">Mobile App</span>
+                    </div>
+                    <div class="project-content">
+                        <h2>Travel Booking Platform</h2>
+                        <p>End-to-end design of a travel booking app with personalized recommendations and seamless booking flow.</p>
+                        
+                        <div class="project-tech">
+                            <span class="tech-tag">iOS</span>
+                            <span class="tech-tag">Android</span>
+                            <span class="tech-tag">User Testing</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="https://www.figma.com/proto/example3" target="_blank" class="btn btn-sm">
+                                <i class="fab fa-figma"></i> Prototype
+                            </a>
+                            <button class="btn btn-outline btn-sm view-gallery" data-project="3">
+                                <i class="fas fa-images"></i> View Images
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 4 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400/6c63ff/ffffff?text=Banking+Website" alt="Banking Website Redesign">
+                        <span class="project-tag">Web Design</span>
+                    </div>
+                    <div class="project-content">
+                        <h2>Banking Website Redesign</h2>
+                        <p>Modernized online banking interface with improved accessibility and security features for a major bank.</p>
+                        
+                        <div class="project-tech">
+                            <span class="tech-tag">WCAG</span>
+                            <span class="tech-tag">HTML/CSS</span>
+                            <span class="tech-tag">User Flows</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="https://www.figma.com/proto/example4" target="_blank" class="btn btn-sm">
+                                <i class="fab fa-figma"></i> Prototype
+                            </a>
+                            <button class="btn btn-outline btn-sm view-gallery" data-project="4">
+                                <i class="fas fa-images"></i> View Images
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 5 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400/ff6584/ffffff?text=Fitness+App" alt="Fitness Tracking App">
+                        <span class="project-tag">Mobile App</span>
+                    </div>
+                    <div class="project-content">
+                        <h2>Fitness Tracking App</h2>
+                        <p>Comprehensive fitness app with workout tracking, nutrition planning, and progress analytics.</p>
+                        
+                        <div class="project-tech">
+                            <span class="tech-tag">iOS</span>
+                            <span class="tech-tag">HealthKit</span>
+                            <span class="tech-tag">Motion Design</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="https://www.figma.com/proto/example5" target="_blank" class="btn btn-sm">
+                                <i class="fab fa-figma"></i> Prototype
+                            </a>
+                            <button class="btn btn-outline btn-sm view-gallery" data-project="5">
+                                <i class="fas fa-images"></i> View Images
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Project 6 -->
+                <div class="project-card">
+                    <div class="project-image">
+                        <img src="https://via.placeholder.com/600x400/4cc9f0/ffffff?text=Food+Delivery" alt="Food Delivery Service">
+                        <span class="project-tag">UI/UX Design</span>
+                    </div>
+                    <div class="project-content">
+                        <h2>Food Delivery Service</h2>
+                        <p>Redesigned the ordering experience for a food delivery platform, reducing order time by 40%.</p>
+                        
+                        <div class="project-tech">
+                            <span class="tech-tag">User Testing</span>
+                            <span class="tech-tag">Microinteractions</span>
+                            <span class="tech-tag">A/B Testing</span>
+                        </div>
+                        
+                        <div class="project-links">
+                            <a href="https://www.figma.com/proto/example6" target="_blank" class="btn btn-sm">
+                                <i class="fab fa-figma"></i> Prototype
+                            </a>
+                            <button class="btn btn-outline btn-sm view-gallery" data-project="6">
+                                <i class="fas fa-images"></i> View Images
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Gallery Modals -->
+    <!-- Project 1 Modal -->
+    <div class="gallery-modal" id="gallery-modal-1">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <img src="https://via.placeholder.com/1200x800/6c63ff/ffffff?text=E-commerce+Home" alt="" class="modal-main-image">
+            
+            <div class="modal-project-info">
+                <h3>E-commerce App Redesign</h3>
+                <p>Home Screen - Showing featured products and categories</p>
+            </div>
+            
+            <div class="modal-nav">
+                <button class="nav-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="nav-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="thumbnail-container">
+                <div class="thumbnail active">
+                    <img src="https://via.placeholder.com/600x400/6c63ff/ffffff?text=E-commerce+Home" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/ff6584/ffffff?text=Product+Page" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/4cc9f0/ffffff?text=Cart+Screen" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/6c63ff/ffffff?text=Checkout+Process" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/ff6584/ffffff?text=Order+Confirmation" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Project 2 Modal -->
+    <div class="gallery-modal" id="gallery-modal-2">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <img src="https://via.placeholder.com/1200x800/ff6584/ffffff?text=Dashboard+Main" alt="" class="modal-main-image">
+            
+            <div class="modal-project-info">
+                <h3>Healthcare Dashboard</h3>
+                <p>Main Dashboard - Overview of patient statistics</p>
+            </div>
+            
+            <div class="modal-nav">
+                <button class="nav-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="nav-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="thumbnail-container">
+                <div class="thumbnail active">
+                    <img src="https://via.placeholder.com/600x400/ff6584/ffffff?text=Dashboard+Main" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/4cc9f0/ffffff?text=Patient+Details" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/6c63ff/ffffff?text=Treatment+Plan" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/ff6584/ffffff?text=Analytics" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/4cc9f0/ffffff?text=Settings" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Project 3 Modal -->
+    <div class="gallery-modal" id="gallery-modal-3">
+        <div class="modal-content">
+            <span class="modal-close">&times;</span>
+            <img src="https://via.placeholder.com/1200x800/4cc9f0/ffffff?text=Travel+Home" alt="" class="modal-main-image">
+            
+            <div class="modal-project-info">
+                <h3>Travel Booking Platform</h3>
+                <p>Home Screen - Featured destinations and search</p>
+            </div>
+            
+            <div class="modal-nav">
+                <button class="nav-btn prev-btn"><i class="fas fa-chevron-left"></i></button>
+                <button class="nav-btn next-btn"><i class="fas fa-chevron-right"></i></button>
+            </div>
+            
+            <div class="thumbnail-container">
+                <div class="thumbnail active">
+                    <img src="https://via.placeholder.com/600x400/4cc9f0/ffffff?text=Travel+Home" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/6c63ff/ffffff?text=Search+Results" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/ff6584/ffffff?text=Hotel+Details" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/4cc9f0/ffffff?text=Booking+Process" alt="">
+                </div>
+                <div class="thumbnail">
+                    <img src="https://via.placeholder.com/600x400/6c63ff/ffffff?text=Trip+Management" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Project 4-6 Modals would follow the same pattern -->
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Gallery Modal Functionality
+            const viewGalleryBtns = document.querySelectorAll('.view-gallery');
+            const galleryModals = document.querySelectorAll('.gallery-modal');
+            const closeModalBtns = document.querySelectorAll('.modal-close');
+            const prevBtns = document.querySelectorAll('.prev-btn');
+            const nextBtns = document.querySelectorAll('.next-btn');
+            const allThumbnails = document.querySelectorAll('.thumbnail');
+            
+            // Open modal
+            function openModal(modalId) {
+                document.getElementById(modalId).classList.add('active');
+                document.body.style.overflow = 'hidden';
+                initGallery(modalId);
+            }
+            
+            // Close modal
+            function closeModal() {
+                galleryModals.forEach(modal => modal.classList.remove('active'));
+                document.body.style.overflow = 'auto';
+            }
+            
+            // Initialize gallery with navigation
+            function initGallery(modalId) {
+                const modal = document.getElementById(modalId);
+                const mainImage = modal.querySelector('.modal-main-image');
+                const thumbnails = modal.querySelectorAll('.thumbnail');
+                const prevBtn = modal.querySelector('.prev-btn');
+                const nextBtn = modal.querySelector('.next-btn');
+                
+                let currentIndex = 0;
+                
+                // Update main image
+                function updateMainImage(index) {
+                    currentIndex = index;
+                    const activeThumb = thumbnails[currentIndex];
+                    mainImage.src = activeThumb.querySelector('img').src;
+                    
+                    // Update active thumbnail
+                    thumbnails.forEach(thumb => thumb.classList.remove('active'));
+                    activeThumb.classList.add('active');
+                    
+                    // Update project info text
+                    updateProjectInfo(modalId, currentIndex);
+                }
+                
+                // Navigation functions
+                function showPrev() {
+                    let newIndex = currentIndex - 1;
+                    if (newIndex < 0) newIndex = thumbnails.length - 1;
+                    updateMainImage(newIndex);
+                }
+                
+                function showNext() {
+                    let newIndex = currentIndex + 1;
+                    if (newIndex >= thumbnails.length) newIndex = 0;
+                    updateMainImage(newIndex);
+                }
+                
+                // Update project info based on image
+                function updateProjectInfo(modalId, index) {
+                    const projectTitles = [
+                        "Home Screen - Showing featured products and categories",
+                        "Product Page - Detailed view with options",
+                        "Cart Screen - Items ready for checkout",
+                        "Checkout Process - Simplified flow",
+                        "Order Confirmation - With tracking details"
+                    ];
+                    
+                    // You would customize these for each project
+                    const infoText = modal.querySelector('.modal-project-info p');
+                    infoText.textContent = projectTitles[index] || "Project Screen";
+                }
+                
+                // Event listeners for this modal
+                prevBtn.addEventListener('click', showPrev);
+                nextBtn.addEventListener('click', showNext);
+                
+                // Thumbnail click
+                thumbnails.forEach((thumb, index) => {
+                    thumb.addEventListener('click', () => {
+                        updateMainImage(index);
+                    });
+                });
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', function(e) {
+                    if (modal.classList.contains('active')) {
+                        if (e.key === 'Escape') {
+                            closeModal();
+                        } else if (e.key === 'ArrowLeft') {
+                            showPrev();
+                        } else if (e.key === 'ArrowRight') {
+                            showNext();
+                        }
+                    }
+                });
+            }
+            
+            // Event listeners for opening modals
+            viewGalleryBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const projectId = this.getAttribute('data-project');
+                    openModal(`gallery-modal-${projectId}`);
+                });
+            });
+            
+            // Close modal when clicking X or outside
+            closeModalBtns.forEach(btn => {
+                btn.addEventListener('click', closeModal);
+            });
+            
+            galleryModals.forEach(modal => {
+                modal.addEventListener('click', function(e) {
+                    if (e.target === modal) {
+                        closeModal();
+                    }
+                });
+            });
+            
+            // Animate project cards on scroll
+            const projectCards = document.querySelectorAll('.project-card');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry, index) => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            projectCards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(30px)';
+                card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html>
