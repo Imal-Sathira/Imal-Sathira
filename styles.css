@@ -1094,7 +1094,7 @@
                 /* Responsive Design */ 
                 @media screen and (max-width: 768px) {
                     .contact-container {
-                        grid-template-columns: 0.8fr;
+                        grid-template-columns: 0.6fr;
                     }
                     
                     .contact-info {
